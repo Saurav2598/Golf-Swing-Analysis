@@ -7,18 +7,7 @@ Analyzes golf swing pose data from JSON files to detect:
 2. Maximum hand speed
 
 Usage:
-    python swing_analysis.py <path_to_json_file> [options]
-    
-Options:
-    --metric METRIC      What to compute: p4, hand_speed, both (default: both)
-    --cutoff FREQ        Lowpass filter cutoff frequency in Hz (default: 8.0)
-    --frames START END   Frame range to analyze hand speed (optional)
-    
-Examples:
-    python swing_analysis.py data/1772542049.json
-    python swing_analysis.py data/1772542049.json --metric p4
-    python swing_analysis.py data/1772542049.json --metric hand_speed
-    python swing_analysis.py data/1772542049.json --cutoff 10.0 --frames 50 150
+    python swing_analysis.py <path_to_json_file>
 """
 
 import sys
