@@ -73,22 +73,19 @@ Ball speed is calculated from frame to frame displacements and the impact frame 
 ## Assumptions
 
 1. Swing start (P0):
-The recording is assumed to start at address (P0) or very close to it. All segment rotations (yaw angles) are therefore computed relative to the first frame of the recording.
+The recording is assumed to start at address (P0) or very close to it and all segment rotations (yaw angles) are therefore computed relative to the first frame.
 
 2. Backswing region for P4 detection:
 The top of the backswing (P4) is assumed to occur within the first half of the recorded frames, and P4 is identified as the frame with maximum absolute shoulder (thorax) yaw within this plausible backswing region.
 
-3. Yaw as the primary rotation metric:
-Segment rotations are analyzed using yaw (rotation about the vertical axis), assuming that the dominant rotational motion of the golf swing occurs in the transverse plane.
-
-4. Butterworth filtering for body markers:
+3. Butterworth filtering for body markers:
 A 4th-order Butterworth low-pass filter with a 10 Hz cutoff is assumed to adequately capture the relevant human movement kinematics of the golf swing while removing high-frequency measurement noise from the marker trajectories.
 
-5. Savitzky–Golay filtering for ball motion:
+4. Savitzky–Golay filtering for ball motion:
 A Savitzky–Golay filter is used for the ball trajectory because it preserves sharp motion changes and local velocity peaks, which is important for accurately detecting the sudden acceleration of the ball immediately after impact.
 
-6. Impact detection threshold:
-The impact frame is detected when ball speed exceeds 1 m/s for at least two consecutive frames, assuming this threshold is sufficiently above marker noise and small tracking jitter to reliably indicate true ball motion after club contact.
+5. Impact detection threshold:
+The impact frame is detected when ball speed exceeds 1 m/s for at least two consecutive frames as this threshold is assumed to be sufficiently above marker noise and small tracking jitter to reliably indicate true ball motion after club contact.
 
 ## Results
 "1772542049.json"
@@ -119,19 +116,17 @@ For Swing B
 
 <img width="1200" height="800" alt="81_PLOTS" src="https://github.com/user-attachments/assets/97559ca8-a963-4d86-a3dc-97c759363d9b" />
 
-At the top of the backswing (P4), Swing A shows greater overall body rotation than Swing B, with approximately 10° more thorax rotation, 12° more pelvis rotation, and 7° more knee rotation. Despite these differences in absolute segment rotations, both swings exhibit a nearly identical X-factor (~57–58°), indicating similar torso–pelvis separation at the top of the backswing.
+At the top of the backswing (P4), Swing A shows greater overall segment rotation than Swing B, with approximately 10° more thorax rotation, 12° more pelvis rotation, and 7° more knee rotation. Both swings exhibit a nearly identical X-factor (~57–58°), indicating similar torso–pelvis separation at the top of the backswing.
 
-The rotational profiles for shoulder, pelvis, knee and X-factor shows a very similar pattern in both swings suggesting that they are performed by the same player
+The rotational profiles for shoulder, pelvis, knee and X-factor shows a very similar pattern in both swings suggesting that they are performed by the same player.
 
 However, there are some differences in the kinematic sequence of angular velocity peaks. In Swing B, the thorax angular velocity peak occurs about 8 frames later relative to the pelvis peak, whereas in Swing A the thorax peak occurs almost immediately (about 1 frame later).
 
-The peak angular velocities of the pelvis, thorax, and club head are noticeably higher in Swing B compared to Swing A, indicating a faster overall rotational motion during the downswing in Swing B.
+The peak angular velocities of the pelvis, thorax, and club head are much higher in Swing B compared to Swing A. 
 
-The differences in kinematic sequencing and the irregular timing of some peak velocities indicate less consistent coordination of segmental motion, which is more characteristic of an amateur golfer than a highly consistent professional.
-
-Final Conclusion : Strong similarities in their rotational profiles and nearly identical X factor that they are performed by the same athlete, probably an amateur golfer with the first swing possibly a warm-up swing.
+Final Conclusion : Very similar rotational profiles and nearly identical X factor suggest that they are performed by the same athlete, even though there are considerable difference in kinematic sequences and the peak angular velocities which may be because of the skill level of the athlete or completely different swing types  ( Lower effort swing vs Full Swing ).
 
 
-##References
+## References
 1.Zhou JY, Richards A, Schadl K, Ladd A and Rose J (2022) The swing performance Index: Developing a single-score index of golf swing rotational biomechanics quantified with 3D kinematics. Front. Sports Act. Living 4:986281. doi: 10.3389/fspor.2022.986281
 2.
