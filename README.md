@@ -116,7 +116,9 @@ For Swing B
 
 <img width="1200" height="800" alt="81_PLOTS" src="https://github.com/user-attachments/assets/97559ca8-a963-4d86-a3dc-97c759363d9b" />
 
-At the top of the backswing (P4), Swing A shows greater overall segment rotation than Swing B, with approximately 10° more thorax rotation, 12° more pelvis rotation, and 7° more knee rotation. Both swings exhibit a nearly identical X-factor (~57–58°), indicating similar torso–pelvis separation at the top of the backswing.
+At the top of the backswing (P4), Swing A shows greater overall segment rotation than Swing B, with approximately 10° more thorax rotation, 12° more pelvis rotation, and 7° more knee rotation. Both swings exhibit a nearly identical X-factor (~57–58°).
+
+X-factor is the seperation between thorax and pelvis rotation at the top of the backswing(P4).
 
 The rotational profiles for shoulder, pelvis, knee and X-factor shows a very similar pattern in both swings suggesting that they are performed by the same player.
 
