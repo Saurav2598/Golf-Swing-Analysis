@@ -131,6 +131,6 @@ Final Conclusion : Very similar rotational profiles and nearly identical X facto
 
 ## References
 1.Zhou JY, Richards A, Schadl K, Ladd A and Rose J (2022) The swing performance Index: Developing a single-score index of golf swing rotational biomechanics quantified with 3D kinematics. Front. Sports Act. Living 4:986281. doi: 10.3389/fspor.2022.986281
-<b>
+<br>
 2.B. F. Taylor, Biomechanical Golf Swing Analysis using Markerless Motion Capture, Master’s thesis, Massachusetts Institute of Technology, Cambridge, MA, USA, 2025.
-<b>
+<br>
