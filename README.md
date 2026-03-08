@@ -4,8 +4,8 @@
 
 1. Create a virtual environment eg: using python -m venv .venv
 2. Activate venv and run pip install -r requirements.txt
-3. From CLI run "python swing_analysis.py data/1772542049.json" to get the metrics ( P4 frame and max_hand_speed)
-4. From CLI run "python plot_swing.py data/1772542049.json" to get swing plots
+3. From CLI run python swing_analysis.py "json path" to get the metrics ( P4 frame and max_hand_speed)
+4. From CLI run python plot_swings.py "json path" to get swing plots
 
 ## Shoulder Rotation and P4 frame identification
 
