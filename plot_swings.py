@@ -6,18 +6,7 @@ Plots golf swing metrics from JSON file.
 Computes only what's necessary for plotting.
 
 Usage:
-    python plot_swing.py <path_to_json_file> [options]
-
-Options:
-    --p4 FRAME           P4 frame number (optional, computed if not provided)
-    --impact FRAME       Impact frame number (optional)
-    --cutoff FREQ        Lowpass filter cutoff frequency in Hz (default: 10.0)
-    --no-annotate        Disable peak annotations on plots
-
-Examples:
-    python plot_swing.py data/1772542049.json
-    python plot_swing.py data/1772542049.json --p4 111 --impact 145
-    python plot_swing.py data/1772542049.json --cutoff 8.0 --no-annotate
+    python plot_swing.py <path_to_json_file> 
 """
 
 import sys
@@ -409,29 +398,19 @@ def plot_swing_analysis(
     plt.tight_layout(rect=[0, 0, 1, 0.96])
     plt.show()
 
-
 def main():
     """Main entry point for CLI usage."""
+
     parser = argparse.ArgumentParser(
-        description="Plot golf swing analysis graphs",
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        description="Plot golf swing analysis graphs"
     )
 
     parser.add_argument("json_file", help="Path to JSON file")
-    parser.add_argument("--p4", type=int, help="P4 frame (auto-computed if not provided)")
-    parser.add_argument("--impact", type=int, help="Impact frame (auto-computed if not provided)")
-    parser.add_argument(
-        "--threshold",
-        type=float,
-        default=1.0,
-        help="Ball speed threshold for impact detection in m/s (default: 1.0)"
-    )
-    parser.add_argument("--cutoff", type=float, default=10.0, help="Filter cutoff Hz (default: 10.0)")
-    parser.add_argument("--no-annotate", action="store_true", help="Disable peak annotations")
 
     args = parser.parse_args()
 
     try:
+        # Load data
         data = load_json_clean(args.json_file)
         pose_data = data["data"]["pose"]
         club_data = data["data"]["club"]
@@ -439,25 +418,23 @@ def main():
         fs = data["configuration"]["frame_rate"]
 
         file_id = get_file_stem_from_path(args.json_file)
+
         joint_dict = create_joint_dict(pose_data)
 
-        p4_frame = args.p4 if args.p4 is not None else compute_p4_frame(joint_dict, fs)
+        # ===== Auto compute parameters =====
+        p4_frame = compute_p4_frame(joint_dict, fs)
+        impact_frame = compute_impact_frame(ball_data, fs, threshold=1.0)
 
-        if args.impact is not None:
-            impact_frame = args.impact
-        else:
-            impact_frame = compute_impact_frame(ball_data, fs, threshold=args.threshold)
-            if impact_frame is None:
-                print(f"Warning: Impact not detected with threshold {args.threshold} m/s")
+        if impact_frame is None:
+            print("Warning: Impact not detected")
 
+        # ===== Print info =====
         print(f"File ID: {file_id}")
         print(f"P4 Frame: {p4_frame}")
-        if impact_frame is not None:
-            print(f"Impact Frame: {impact_frame}")
-        else:
-            print("Impact Frame: Not detected")
+        print(f"Impact Frame: {impact_frame}")
         print("Generating plot...")
 
+        # ===== Plot =====
         plot_swing_analysis(
             joint_dict=joint_dict,
             club_data=club_data,
@@ -465,13 +442,14 @@ def main():
             fs=fs,
             p4_frame=p4_frame,
             impact_frame=impact_frame,
-            cutoff_hz=args.cutoff,
-            annotate=not args.no_annotate
+            cutoff_hz=10.0,
+            annotate=True
         )
 
     except FileNotFoundError:
         print(f"Error: File not found: {args.json_file}")
         sys.exit(1)
+
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)

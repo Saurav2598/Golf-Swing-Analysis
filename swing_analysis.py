@@ -7,18 +7,7 @@ Analyzes golf swing pose data from JSON files to detect:
 2. Maximum hand speed
 
 Usage:
-    python swing_analysis.py <path_to_json_file> [options]
-    
-Options:
-    --metric METRIC      What to compute: p4, hand_speed, both (default: both)
-    --cutoff FREQ        Lowpass filter cutoff frequency in Hz (default: 8.0)
-    --frames START END   Frame range to analyze hand speed (optional)
-    
-Examples:
-    python swing_analysis.py data/1772542049.json
-    python swing_analysis.py data/1772542049.json --metric p4
-    python swing_analysis.py data/1772542049.json --metric hand_speed
-    python swing_analysis.py data/1772542049.json --cutoff 10.0 --frames 50 150
+    python swing_analysis.py <path_to_json_file>
 """
 
 import sys
@@ -226,91 +215,57 @@ def compute_max_hand_speed_from_joints(
 
 def main():
     """Main entry point for CLI usage."""
-    parser = argparse.ArgumentParser(
-        description="Analyze golf swing P4 position and hand speed",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Metrics:
-  p4          Compute only P4 frame (maximum shoulder rotation)
-  hand_speed  Compute only maximum hand speed
-  both        Compute both metrics (default)
 
-Examples:
-  %(prog)s data/swing.json
-  %(prog)s data/swing.json --metric p4
-  %(prog)s data/swing.json --metric hand_speed --cutoff 10.0
-  %(prog)s data/swing.json --frames 50 150
-        """
+    parser = argparse.ArgumentParser(
+        description="Analyze golf swing P4 position and hand speed"
     )
-    
+
     parser.add_argument(
         "json_file",
         help="Path to JSON file containing swing data"
     )
-    
-    parser.add_argument(
-        "--metric",
-        default="both",
-        choices=["p4", "hand_speed", "both"],
-        help="What to compute (default: both)"
-    )
-    
-    parser.add_argument(
-        "--cutoff",
-        type=float,
-        default=10.0,
-        help="Lowpass filter cutoff frequency in Hz for hand speed (default: 8.0)"
-    )
-    
-    parser.add_argument(
-        "--frames",
-        nargs=2,
-        type=int,
-        metavar=("START", "END"),
-        help="Frame range for hand speed analysis (optional)"
-    )
-    
+
     args = parser.parse_args()
-    
+
     try:
         # Load data
         data = load_json_clean(args.json_file)
-        pose_data = data['data']['pose']
-        frame_rate = data['configuration']['frame_rate']
-        
+        pose_data = data["data"]["pose"]
+        frame_rate = data["configuration"]["frame_rate"]
+
         # Create joint dictionary
         joint_dict = create_joint_dict(pose_data, JOINT_LABELS)
-        
-        # Compute P4 if requested
-        if args.metric in ["p4", "both"]:
-            p4_frame, max_rotation = compute_p4_frame(joint_dict, fs=frame_rate)
-            print(f"P4 Frame: {p4_frame}")
-        
-        # Compute hand speed if requested
-        if args.metric in ["hand_speed", "both"]:
-            max_speed, max_frame, speed_trace, frame_ids, pos_filtered = \
-                compute_max_hand_speed_from_joints(
-                    joint_dict=joint_dict,
-                    fs=frame_rate,
-                    cutoff_hz=args.cutoff,
-                    frames=tuple(args.frames) if args.frames else None
-                )
-            
-            # Convert to mph
-            max_speed_mph = max_speed * 2.23694  # m/s to mph
 
-            
-            print(f"Maximum Hand Speed: {max_speed:.2f} m/s ({max_speed_mph:.2f} mph)")
-        
+        # ===== Compute P4 =====
+        p4_frame, max_rotation = compute_p4_frame(joint_dict, fs=frame_rate)
+        print(f"P4 Frame: {p4_frame}")
+
+        # ===== Compute Hand Speed =====
+        max_speed, max_frame, speed_trace, frame_ids, pos_filtered = \
+            compute_max_hand_speed_from_joints(
+                joint_dict=joint_dict,
+                fs=frame_rate,
+                cutoff_hz=10,
+                frames=None
+            )
+
+        # Convert to mph
+        max_speed_mph = max_speed * 2.23694
+
+        print(f"Maximum Hand Speed: {max_speed:.2f} m/s ({max_speed_mph:.2f} mph)")
+
     except FileNotFoundError:
         print(f"Error: File not found: {args.json_file}")
         sys.exit(1)
+
     except KeyError as e:
         print(f"Error: Missing expected data in JSON: {e}")
         sys.exit(1)
+
     except ValueError as e:
         print(f"Error: {e}")
         sys.exit(1)
+
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
