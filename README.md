@@ -9,22 +9,54 @@
 
 ## Shoulder Rotation and P4 frame identification
 
-Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global co-ordinate system. Construct a local co-ordinate system for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck.
- 
-Here:
+Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global coordinate system.
+
+A local co-ordinate system is constructed for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck. We need a primary axis and secondary axis for the purpose 
+<br>
+Primary Axis: 
 lr_vec = ShoulderR - ShoulderL defines the left-right axis of the thorax
 
+Secodary Axis:
 up_vec = Neck - SpineHigh defines the upward axis of the thorax
 
-They are then orthogonolied and re-orthogonalized to perfectly orthogonalized axes which are then stacked to get the rotation matrix from which yaw is calculate using
+The third axis is identified by taking the cross product of the two axes and then the primary axes is re-orthogonalized.
 
- 					 yaw = np.arctan2(R[:, 1, 0], R[:, 0, 0])
+They are then normalized to unit vectors and a rotation matrix is built.
 
-P4 frame is identified as the point where of maximum absolute yaw in the plausible region of downswing which is assumed to be first half of the frames.
+$$
+\mathbf{e}_{lr} = \frac{\mathbf{lr\_vec}}{\|\mathbf{lr\_vec}\|}
+$$
+
+They are then stacked to built rotation matrix: 
+
+$$
+R =
+\begin{bmatrix}
+e_{lr,x} & e_{fwd,x} & e_{up,x} \\
+e_{lr,y} & e_{fwd,y} & e_{up,y} \\
+e_{lr,z} & e_{fwd,z} & e_{up,z}
+\end{bmatrix}
+$$
+
+Yaw is calculated as:
+
+$$
+\psi = \text{atan2}(e_{lr,y}, e_{lr,x})
+$$
+
+The resulting angle is then unwrapped to remove discontinuities and converted to degrees:
+
+$$
+\psi_{deg} = \text{unwrap}(\psi)\frac{180}{\pi}
+$$
+
+P4 frame is identified as the where shoulder rotation is at it's maximum. This is assumed to fall in the first half of the frames to avoid false identification of shoulder rotation maxima in the follow through.
 
 ### Hand Speed Calculation
 
-The midpoint of both the hands were used an better approximation for hand speed because the leading and trailing hand move differently and how the athlete grips the handle gives a better estimate of the hand system motion.
+Hand speed was calculated from the midpoint of the left and right hand markers instead of using leading and trailing hands as it is a more robust approximation of hand speed.
+
+At each frame, the 3D hand position was defined as the average of the two wrist marker coordinates. The time derivative of this position was computed to obtain hand velocity, and the magnitude of the velocity vector was taken as hand speed. The maximum value of this hand-speed profile during the swing was reported as the maximum hand speed.
 
 Markers Used : "Hand Left", "Hand Right" to calculate midpoint.
 
@@ -99,3 +131,7 @@ The differences in kinematic sequencing and the irregular timing of some peak ve
 
 Final Conclusion : Strong similarities in their rotational profiles and nearly identical X factor that they are performed by the same athlete, probably an amateur golfer with the first swing possibly a warm-up swing.
 
+
+##References
+1.Zhou JY, Richards A, Schadl K, Ladd A and Rose J (2022) The swing performance Index: Developing a single-score index of golf swing rotational biomechanics quantified with 3D kinematics. Front. Sports Act. Living 4:986281. doi: 10.3389/fspor.2022.986281
+2.
