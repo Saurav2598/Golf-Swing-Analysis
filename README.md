@@ -1,102 +1,81 @@
 # Golf-Swing-Analysis
-# Golf-Swing-Analysis
 
-
-
-Instructions to run the code 
-
-
+## Instructions to run the code
 
 1. Create a virtual environment eg: using python -m venv .venv
 2. Activate venv and run pip install -r requirements.txt
-3. From CLI run "python swing\_analysis.py data/1772542049.json" to get the metrics ( P4 frame and max\_hand\_speed)
-4. From CLI run "python plot\_swing.py data/1772542049.json" to get swing plots
+3. From CLI run "python swing_analysis.py data/1772542049.json" to get the metrics ( P4 frame and max_hand_speed)
+4. From CLI run "python plot_swing.py data/1772542049.json" to get swing plots
 
+## Approach
 
+### Shoulder Rotation and P4 frame identification
 
-Approach
-
-
-
-Shoulder Rotation and P4 frame identification
-
-
-
-Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global co-ordinate system. Construct a local co-ordinate system for the segment using the markers Shoulder Right, Shoulder Left, Spine High and Neck.
-
-&nbsp;
-
+Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global co-ordinate system. Construct a local co-ordinate system for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck.
+ 
 Here:
+lr_vec = ShoulderR - ShoulderL defines the left-right axis of the thorax
 
-lr\_vec = ShoulderR - ShoulderL defines the left-right axis of the thorax
-
-
-
-up\_vec = Neck - SpineHigh defines the upward axis of the thorax
-
-
+up_vec = Neck - SpineHigh defines the upward axis of the thorax
 
 They are then orthogonolied and re-orthogonalized to perfectly orthogonalized axes which are then stacked to get the rotation matrix from which yaw is calculate using
 
+ 					 yaw = np.arctan2(R[:, 1, 0], R[:, 0, 0])
 
+P4 frame is identified as the point where of maximum absolute yaw in the plausible region of downswing which is assumed to be first half of the frames.
 
-&nbsp;					 yaw = np.arctan2(R\[:, 1, 0], R\[:, 0, 0])
-
-
-
-P4 frame is identified as the point where of maximum absolute yaw in the plausible region of downswing which is assumed to be first half of the frames. 
-
-
-
-Hand Speed Calculation
-
-
+### Hand Speed Calculation
 
 The midpoint of both the hands were used an better approximation for hand speed because the leading and trailing hand move differently and how the athlete grips the handle gives a better estimate of the hand system motion.
 
-
-
 Markers Used : "Hand Left", "Hand Right" to calculate midpoint.
 
-
-
-Butterworth Lowpass filter 4th order with a cutoff of 10Hz which is the range below human movement kinematics usually occur. 
-
-
+Butterworth Lowpass filter 4th order with a cutoff of 10Hz which is the range below human movement kinematics usually occur.
 
 Marker trajectories were low-pass filtered prior to differentiation to reduce high-frequency measurement noise.
 
+### Impact Frame Calculation 
 
 
-Results: 
 
+## Results
 "1772542049.json"
-
+&nbsp;
 P4 Frame: 111
-
+&nbsp;
 Maximum Hand Speed: 5.95 m/s (13.31 mph)
 
-
-
 "1768733281.json"
-
+&nbsp;
 P4 Frame: 135
-
+&nbsp;
 Maximum Hand Speed: 8.78 m/s (19.63 mph)
 
+## Comparison of 2 swings
 
 
-Comparison of 2 swings
+For Swing A "1772542049.json"
 
-
-
-Assuming the swings are not from a complete beginner but a player who has been coached and i analysed the sequence of peaks of angular velocities of segments as shown in the figures below 
-
-
+<img width="1200" height="800" alt="49_PLOTS" src="https://github.com/user-attachments/assets/5ffabc1b-3e72-4180-ac4e-b1d1099445cb" />
 
 
 
 
+For Swing B "1768733281.json"
 
 
+
+<img width="1200" height="800" alt="81_PLOTS" src="https://github.com/user-attachments/assets/97559ca8-a963-4d86-a3dc-97c759363d9b" />
+
+At the top of the backswing (P4), Swing A shows greater overall body rotation than Swing B, with approximately 10° more thorax rotation, 12° more pelvis rotation, and 7° more knee rotation. Despite these differences in absolute segment rotations, both swings exhibit a nearly identical X-factor (~57–58°), indicating similar torso–pelvis separation at the top of the backswing.
+
+The rotational profiles for shoulder, pelvis, knee and X-factor shows a very similar pattern in both swings suggesting that they are performed by the same player
+
+However, there are some differences in the kinematic sequence of angular velocity peaks. In Swing B, the thorax angular velocity peak occurs about 8 frames later relative to the pelvis peak, whereas in Swing A the thorax peak occurs almost immediately (about 1 frame later).
+
+The peak angular velocities of the pelvis, thorax, and club head are noticeably higher in Swing B compared to Swing A, indicating a faster overall rotational motion during the downswing in Swing B.
+
+The differences in kinematic sequencing and the irregular timing of some peak velocities indicate less consistent coordination of segmental motion, which is more characteristic of an amateur golfer than a highly consistent professional.
+
+Final Conclusion : Strong similarities in their rotational profiles and nearly identical X factor that they are performed by the same athlete, probably an amateur golfer with the first swing possibly a warm-up swing.
 
