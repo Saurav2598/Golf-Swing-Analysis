@@ -74,14 +74,14 @@ Maximum Hand Speed: 8.78 m/s (19.63 mph)
 ## Comparison of 2 swings
 
 
-For Swing A "1772542049.json"
+For Swing A 
 
 <img width="1200" height="800" alt="49_PLOTS" src="https://github.com/user-attachments/assets/5ffabc1b-3e72-4180-ac4e-b1d1099445cb" />
 
 
 
 
-For Swing B "1768733281.json"
+For Swing B 
 
 
 
