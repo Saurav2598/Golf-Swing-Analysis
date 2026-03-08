@@ -60,9 +60,11 @@ In each frame, the 3D hand position was defined as the average of the two wrist 
 
 Markers Used : "Hand Left"(22), "Hand Right"(18) 
 
-4th order Butterworth Lowpass filter with a cutoff of 10Hz ( which is the  human movement kinematics usually occur).
+4th order Butterworth Lowpass filter with a cutoff of 10Hz ( which is the  human movement kinematics usually occur). 
 
-Marker trajectories were low-pass filtered prior to differentiation to reduce high-frequency measurement noise.
+In the present dataset, filtering had minimal influence on the computed hand-speed values because the joint coordinates are already relatively smooth. Nevertheless filtering was applied to stick to standard biomechanical signal processing practices.
+
+Marker trajectories were low-pass filtered prior to differentiation.
 
 ### Impact Frame Calculation 
 
@@ -81,10 +83,7 @@ The top of the backswing (P4) is assumed to occur within the first half of the r
 3. Butterworth filtering for body markers:
 A 4th-order Butterworth low-pass filter with a 10 Hz cutoff is assumed to adequately capture the relevant human movement kinematics of the golf swing while removing high-frequency measurement noise from the marker trajectories.
 
-4. Savitzky–Golay filtering for ball motion:
-A Savitzky–Golay filter is used for the ball trajectory because it preserves sharp motion changes and local velocity peaks, which is important for accurately detecting the sudden acceleration of the ball immediately after impact.
-
-5. Impact detection threshold:
+4. Impact detection threshold:
 The impact frame is detected when ball speed exceeds 1 m/s for at least two consecutive frames as this threshold is assumed to be sufficiently above marker noise and small tracking jitter to reliably indicate true ball motion after club contact.
 
 ## Results
