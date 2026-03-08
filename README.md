@@ -11,7 +11,7 @@
 
 Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global coordinate system.
 
-A local coordinate system is constructed for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck. We need a primary axis and secondary axis for this purpose 
+A local coordinate system is constructed for the segment using the markers: Shoulder Right(15), Shoulder Left(19), Spine High(14) and Neck(23). We need a primary axis and secondary axis for this purpose 
 <br>
 Primary Axis: 
 lr_vec = ShoulderR - ShoulderL defines the left-right axis of the thorax
@@ -54,19 +54,19 @@ P4 frame is identified as the instance where shoulder rotation is maximum. This 
 
 ### Hand Speed Calculation
 
-Hand speed was calculated from the midpoint of the left and right hand markers instead of using leading and trailing hands as it is a more robust approximation of hand speed.
+Hand speed is calculated from the midpoint of the left and right hand markers instead of using leading or trailing hands as it is a more robust approximation of hand speed.
 
-At each frame, the 3D hand position was defined as the average of the two wrist marker coordinates. The time derivative of this position was computed to obtain hand velocity, and the magnitude of the velocity vector was taken as hand speed. The maximum value of this hand-speed profile during the swing was reported as the maximum hand speed.
+In each frame, the 3D hand position was defined as the average of the two wrist marker coordinates. The time derivative of this position was computed to obtain hand velocity, and the magnitude of the velocity vector was taken as hand speed. The maximum value of this hand-speed profile during the swing is reported as the maximum hand speed.
 
-Markers Used : "Hand Left", "Hand Right" to calculate midpoint.
+Markers Used : "Hand Left"(22), "Hand Right"(18) 
 
-Butterworth Lowpass filter 4th order with a cutoff of 10Hz which is the range below human movement kinematics usually occur.
+4th order Butterworth Lowpass filter with a cutoff of 10Hz ( which is the  human movement kinematics usually occur).
 
 Marker trajectories were low-pass filtered prior to differentiation to reduce high-frequency measurement noise.
 
 ### Impact Frame Calculation 
 
-Impact frame calculated from ball co-ordinates. 
+Impact frame calculated from ball coordinates. 
 
 Ball speed calculated from frame to frame displacements and the impact frame is taken as the first instance where the ball_speed is above a threshold(1m/s) consistently for at least 2 consecutive. This is done to avoid false detections caused by marker noise or tracking jitter.
 
