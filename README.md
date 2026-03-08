@@ -36,7 +36,9 @@ Marker trajectories were low-pass filtered prior to differentiation to reduce hi
 
 ### Impact Frame Calculation 
 
+Impact frame calculated from ball co-ordinates. 
 
+Ball speed calculated from frame to frame displacements and the impact frame is taken as the first instance where the ball_speed is above a threshold(1m/s) consistently for at least 2 consecutive. This is done to avoid false detections caused by marker noise or tracking jitter.
 
 ## Results
 "1772542049.json"
