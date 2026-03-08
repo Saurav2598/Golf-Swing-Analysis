@@ -7,9 +7,7 @@
 3. From CLI run "python swing_analysis.py data/1772542049.json" to get the metrics ( P4 frame and max_hand_speed)
 4. From CLI run "python plot_swing.py data/1772542049.json" to get swing plots
 
-## Approach
-
-### Shoulder Rotation and P4 frame identification
+## Shoulder Rotation and P4 frame identification
 
 Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global co-ordinate system. Construct a local co-ordinate system for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck.
  
@@ -39,6 +37,26 @@ Marker trajectories were low-pass filtered prior to differentiation to reduce hi
 Impact frame calculated from ball co-ordinates. 
 
 Ball speed calculated from frame to frame displacements and the impact frame is taken as the first instance where the ball_speed is above a threshold(1m/s) consistently for at least 2 consecutive. This is done to avoid false detections caused by marker noise or tracking jitter.
+
+## Assumptions
+
+1. Swing start (P0):
+The recording is assumed to start at address (P0) or very close to it. All segment rotations (yaw angles) are therefore computed relative to the first frame of the recording.
+
+2. Backswing region for P4 detection:
+The top of the backswing (P4) is assumed to occur within the first half of the recorded frames, and P4 is identified as the frame with maximum absolute shoulder (thorax) yaw within this plausible backswing region.
+
+3. Yaw as the primary rotation metric:
+Segment rotations are analyzed using yaw (rotation about the vertical axis), assuming that the dominant rotational motion of the golf swing occurs in the transverse plane.
+
+4. Butterworth filtering for body markers:
+A 4th-order Butterworth low-pass filter with a 10 Hz cutoff is assumed to adequately capture the relevant human movement kinematics of the golf swing while removing high-frequency measurement noise from the marker trajectories.
+
+5. Savitzky–Golay filtering for ball motion:
+A Savitzky–Golay filter is used for the ball trajectory because it preserves sharp motion changes and local velocity peaks, which is important for accurately detecting the sudden acceleration of the ball immediately after impact.
+
+6. Impact detection threshold:
+The impact frame is detected when ball speed exceeds 1 m/s for at least two consecutive frames, assuming this threshold is sufficiently above marker noise and small tracking jitter to reliably indicate true ball motion after club contact.
 
 ## Results
 "1772542049.json"
