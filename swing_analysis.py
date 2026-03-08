@@ -169,12 +169,12 @@ def compute_p4_frame(joint_dict, fs=120.0):
     p4_frame = local_idx
     max_rotation = thorax_yaw[p4_frame]
 
-
+    return p4_frame, max_rotation
 
 def compute_max_hand_speed_from_joints(
     joint_dict,
     fs=120.0,
-    cutoff_hz=8.0,
+    cutoff_hz=10.0,
     frames=None
 ):
     """
@@ -258,7 +258,7 @@ Examples:
     parser.add_argument(
         "--cutoff",
         type=float,
-        default=8.0,
+        default=10.0,
         help="Lowpass filter cutoff frequency in Hz for hand speed (default: 8.0)"
     )
     
