@@ -11,7 +11,7 @@
 
 Shoulder rotation is calculated as the thorax segment (shoulder line) yaw angle in the global coordinate system.
 
-A local co-ordinate system is constructed for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck. We need a primary axis and secondary axis for the purpose 
+A local coordinate system is constructed for the segment using the markers: Shoulder Right, Shoulder Left, Spine High and Neck. We need a primary axis and secondary axis for this purpose 
 <br>
 Primary Axis: 
 lr_vec = ShoulderR - ShoulderL defines the left-right axis of the thorax
@@ -21,13 +21,13 @@ up_vec = Neck - SpineHigh defines the upward axis of the thorax
 
 The third axis is identified by taking the cross product of the two axes and then the primary axes is re-orthogonalized.
 
-They are then normalized to unit vectors and a rotation matrix is built.
+Normalized to unit vectors and a rotation matrix is built.
 
 $$
 \mathbf{e}_{lr} = \frac{\mathbf{lr\_vec}}{\|\mathbf{lr\_vec}\|}
 $$
 
-They are then stacked to built rotation matrix: 
+The unit vectors are then stacked to build the rotation matrix: 
 
 $$
 R =
@@ -41,7 +41,7 @@ $$
 Yaw is calculated as:
 
 $$
-\psi = \text{atan2}(e_{lr,y}, e_{lr,x})
+\psi = \text{arctan2}(e_{lr,y}, e_{lr,x})
 $$
 
 The resulting angle is then unwrapped to remove discontinuities and converted to degrees:
@@ -50,7 +50,7 @@ $$
 \psi_{deg} = \text{unwrap}(\psi)\frac{180}{\pi}
 $$
 
-P4 frame is identified as the where shoulder rotation is at it's maximum. This is assumed to fall in the first half of the frames to avoid false identification of shoulder rotation maxima in the follow through.
+P4 frame is identified as the instance where shoulder rotation is maximum. This is assumed to fall in the first half of the frames so as to avoid false identification of shoulder rotation maxima in the follow through.
 
 ### Hand Speed Calculation
 
