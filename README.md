@@ -124,7 +124,7 @@ However, there are some differences in the kinematic sequence of angular velocit
 
 The peak angular velocities of the pelvis, thorax, and club head are much higher in Swing B compared to Swing A. 
 
-Final Conclusion : Very similar rotational profiles and nearly identical X factor suggest that they are performed by the same athlete, even though there are considerable difference in kinematic sequences and the peak angular velocities which may be because of the skill level of the athlete or completely different swing types  ( Lower effort swing vs Full Swing ).
+Final Conclusion : Very similar rotational profiles and nearly identical X factor suggest that both swings are performed by the same athlete, even though there are considerable differences in kinematic sequences and the peak angular velocities which may be because of the skill level of the athlete or completely different swing types  ( Lower effort swing vs Full Swing ).
 
 
 ## References
